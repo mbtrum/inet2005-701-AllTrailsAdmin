@@ -1,8 +1,51 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+    string name = "Mike";
+    string message = "Hello Razor!";
+
+    int count = 10;
+
+    var friends = new List<string>();
+    friends.Add("Joe");
+    friends.Add("Tara"); // bold Tara's name when displaying 
+    friends.Add("Nick");
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+@{
+    // add to message
+    message += " This is a message from the code block.";
+}
+
+<div class="text-center">
+    Hi @name. @message
+</div>
+
+
+<div class="text-center">
+    @if(count > 5)
+    {
+        <p>Count is greater than 5.</p>
+    }
+    else
+    {
+        <p>Count is equal to or less than 5.</p>
+    }
+</div>
+
+<div>
+    <ul>
+        @foreach(string friend in friends)
+        {
+            <li>@friend</li>
+        }
+    </ul>
+</div>
+
+
+
