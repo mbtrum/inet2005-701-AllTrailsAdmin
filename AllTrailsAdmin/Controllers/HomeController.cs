@@ -25,7 +25,7 @@ namespace AllTrailsAdmin.Controllers
         }
 
         // GET: Home/Privacy
-        public IActionResult Privacy()
+        public ViewResult Privacy()
         {
             Console.WriteLine("/Home/Privacy action method called.");
 
@@ -33,11 +33,27 @@ namespace AllTrailsAdmin.Controllers
         }
 
 
+        // GET : Home/MyFirstActionMethod
         public IActionResult MyFirstActionMethod()
         {
             Console.WriteLine("MyFirstActionMethod is called.");
 
             return View();
+        }
+
+        public ContentResult HelloWorld()
+        {
+            return Content("Hello world!!!");
+        }
+
+        public JsonResult MyFriend()
+        {
+            Friend friend = new Friend();
+            friend.Id = 1;
+            friend.Name = "Han Solo";
+            friend.Email = "hansolo@rebels.ca";
+
+            return Json(friend);
         }
 
 
