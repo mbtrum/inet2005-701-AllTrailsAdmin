@@ -1,0 +1,38 @@
+﻿@model List<AllTrailsAdmin.Models.Trail>
+
+@{
+    // The trail object is referred to as "Model"
+
+    ViewData["Title"] = "Trail - All Trails";
+}
+
+@foreach(Trail trail in Model)
+{
+    <h1>@trail.Title</h1>
+    <p>@trail.Description</p>
+    <hr />
+}
+
+
+
+@* 
+<h1>
+    @Model.Title
+</h1>
+
+<p>
+    @Model.Description
+</p>
+
+@{
+    double lengthKm = (double)Model.Length / 1000;
+}
+
+<p>
+    Length: @lengthKm.ToString("0.0") km<br />
+    Hours: @Model.EstimatedHours hr<br />
+    Difficulty: @Model.Difficulty
+</p> *@
+
+
+
