@@ -12,22 +12,28 @@ public class TrailsController : Controller
         _context = context;
     }
 
-    // GET: TRAILS
-    public async Task<IActionResult> Index()    
+    // GET: TRAILS/Index
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Trail.ToListAsync());
+        var trails = await _context.Trail            
+            .OrderByDescending(t => t.CreatedDate) // order by created date descending)
+            .ToListAsync(); // get all trails from db
+
+        return View(trails); // display trails in the view
     }
 
     // GET: TRAILS/Details/5
     public async Task<IActionResult> Details(int? id)
     {
+        // Is an Id included in URL?
         if (id == null)
         {
             return NotFound();
         }
 
-        var trail = await _context.Trail
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var trail = await _context.Trail.FirstOrDefaultAsync(m => m.Id == id); // get trail from db where Id = 5
+
+        // Was the row found in database?
         if (trail == null)
         {
             return NotFound();
@@ -49,12 +55,14 @@ public class TrailsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate")] Trail trail)
     {
-        if (ModelState.IsValid)
+        if (ModelState.IsValid) // validate input
         {
-            _context.Add(trail);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            _context.Add(trail); // add new trail to context (db)
+            await _context.SaveChangesAsync(); // save context changes in db
+
+            return RedirectToAction(nameof(Index)); // re-direct to Trails/Index page
         }
+
         return View(trail);
     }
 
@@ -67,10 +75,12 @@ public class TrailsController : Controller
         }
 
         var trail = await _context.Trail.FindAsync(id);
+
         if (trail == null)
         {
             return NotFound();
         }
+
         return View(trail);
     }
 
