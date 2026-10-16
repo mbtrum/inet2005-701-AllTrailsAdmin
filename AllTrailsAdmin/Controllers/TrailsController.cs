@@ -2,22 +2,24 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AllTrailsAdmin.Models;
+using AllTrailsAdmin.Services;
 
 public class TrailsController : Controller
 {
     private readonly AllTrailsAdminContext _context;
+    private readonly AzureStorageService _azureStorage;
 
-    public TrailsController(AllTrailsAdminContext context)
+    // Constructor
+    public TrailsController(AllTrailsAdminContext context, AzureStorageService azureStorage)
     {
         _context = context;
+        _azureStorage = azureStorage;
     }
 
     // GET: TRAILS/Index
     public async Task<IActionResult> Index()
     {
-        var trails = await _context.Trail            
-            .OrderByDescending(t => t.CreatedDate) // order by created date descending)
-            .ToListAsync(); // get all trails from db
+        List<Trail> trails = await _context.Trail.ToListAsync();
 
         return View(trails); // display trails in the view
     }
@@ -28,7 +30,7 @@ public class TrailsController : Controller
         // Is an Id included in URL?
         if (id == null)
         {
-            return NotFound();
+            return NotFound();            
         }
 
         var trail = await _context.Trail.FirstOrDefaultAsync(m => m.Id == id); // get trail from db where Id = 5
@@ -53,10 +55,17 @@ public class TrailsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate")] Trail trail)
+    public async Task<IActionResult> Create([Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate")] Trail trail, IFormFile ImageUpload)
     {
         if (ModelState.IsValid) // validate input
         {
+            // Upload file to Azure Stroage (after input validation occurs)
+            string filename = ImageUpload.FileName;
+            string url = await _azureStorage.UploadFileAsync(ImageUpload, filename);
+
+            // TO:DO: set the image URL in trail record            
+
+
             _context.Add(trail); // add new trail to context (db)
             await _context.SaveChangesAsync(); // save context changes in db
 

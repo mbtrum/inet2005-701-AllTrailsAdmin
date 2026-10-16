@@ -1,3 +1,4 @@
+using AllTrailsAdmin.Services;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AllTrailsAdminContext") ?? throw new InvalidOperationException("Connection string 'AllTrailsAdminContext' not found.");
@@ -6,6 +7,9 @@ builder.Services.AddDbContext<AllTrailsAdminContext>(options => options.UseSqlSe
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Register file upload service
+builder.Services.AddScoped<AzureStorageService>();
 
 var app = builder.Build();
 
