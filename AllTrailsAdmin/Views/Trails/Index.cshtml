@@ -12,6 +12,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th><!-- Trail Image --></th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -24,9 +25,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.ElevationGain)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Location)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
@@ -36,6 +37,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                <img src="@item.ImageUrl" alt="@item.Title" class="thumbnail" />
+            </td>
             <td>                
                 @Html.DisplayFor(model => item.Title)
             </td>
@@ -48,9 +52,9 @@
             <td>
                 @Html.DisplayFor(model => item.ElevationGain)
             </td>
-            <td>
+            @* <td>
                 @Html.DisplayFor(model => item.Location)
-            </td>
+            </td> *@
             <td>
                 @Html.DisplayFor(model => item.CreatedDate)
             </td>

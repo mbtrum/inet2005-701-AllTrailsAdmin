@@ -59,12 +59,23 @@ public class TrailsController : Controller
     {
         if (ModelState.IsValid) // validate input
         {
+            //
             // Upload file to Azure Stroage (after input validation occurs)
-            string filename = ImageUpload.FileName;
-            string url = await _azureStorage.UploadFileAsync(ImageUpload, filename);
+            //
 
-            // TO:DO: set the image URL in trail record            
+            // Make a unique filename (GUID.ext)
+            string extension = Path.GetExtension(ImageUpload.FileName); // includes the leading dot, e.g. ".jpg"
+            string newFileName = $"{Guid.NewGuid()}{extension}";
 
+            // Upload file to Azure Storage
+            string url = await _azureStorage.UploadFileAsync(ImageUpload, newFileName);
+
+            // Set the image URL in trail record            
+            trail.ImageUrl = url;
+
+            //
+            // Save trail in database
+            //
 
             _context.Add(trail); // add new trail to context (db)
             await _context.SaveChangesAsync(); // save context changes in db
