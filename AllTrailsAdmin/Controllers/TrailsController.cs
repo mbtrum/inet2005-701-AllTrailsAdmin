@@ -55,8 +55,15 @@ public class TrailsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate")] Trail trail, IFormFile ImageUpload)
+    public async Task<IActionResult> Create([Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate")] Trail trail, IFormFile? ImageUpload)
     {
+        // Validate if Image File is missing
+        if(ImageUpload == null)
+        {
+            // Add a validation error
+            ModelState.AddModelError("ImageUpload", "Image file is required.");
+        }
+
         if (ModelState.IsValid) // validate input
         {
             //
@@ -64,7 +71,7 @@ public class TrailsController : Controller
             //
 
             // Make a unique filename (GUID.ext)
-            string extension = Path.GetExtension(ImageUpload.FileName); // includes the leading dot, e.g. ".jpg"
+            string extension = Path.GetExtension(ImageUpload!.FileName); // includes the leading dot, e.g. ".jpg"
             string newFileName = $"{Guid.NewGuid()}{extension}";
 
             // Upload file to Azure Storage
@@ -109,7 +116,7 @@ public class TrailsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate")] Trail trail)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,ImageUrl")] Trail trail)
     {
         if (id != trail.Id)
         {

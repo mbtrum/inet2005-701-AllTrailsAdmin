@@ -50,7 +50,8 @@
 
             <div class="mb-3">
                 <label for="ImageUpload" class="form-label">Image Upload</label>
-                <input type="file" id="ImageUpload" name="ImageUpload" class="form-control" />
+                <input type="file" id="ImageUpload" name="ImageUpload" class="form-control" />     
+                @Html.ValidationMessage("ImageUpload", new { @class = "text-danger" })
             </div>
 
 

@@ -17,14 +17,14 @@
     </dt>
     <dd class="col-sm-10">
         @{
-            var descWithBreaks = new HtmlString(
+            var descriptionWithBreaks = new HtmlString(
                 Model.Description.Replace("\r\n", "<br />")
                     .Replace("\n", "<br />")
                     .Replace("\r", "<br />"));
 
         }
 
-        @descWithBreaks
+        @descriptionWithBreaks
     </dd>
 
     <dt class="col-sm-2">
