@@ -4,6 +4,7 @@ namespace AllTrailsAdmin.Models
 {
     public class Trail
     {
+        // db primary key
         public int Id { get; set; }
 
         [StringLength(100)]
@@ -26,6 +27,9 @@ namespace AllTrailsAdmin.Models
 
         [Required]
         public string Location { get; set; } = string.Empty; // address, city, province... display Google map later
+
+        [Required]
+        public string Category {  get; set; } = string.Empty; // easy, difficult, dangerous, etc.
 
         // Url to image file stored in Azure Storage
         public string ImageUrl { get; set; } = string.Empty;

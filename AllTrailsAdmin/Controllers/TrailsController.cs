@@ -55,7 +55,7 @@ public class TrailsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate")] Trail trail, IFormFile? ImageUpload)
+    public async Task<IActionResult> Create([Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,Category")] Trail trail, IFormFile? ImageUpload)
     {
         // Validate if Image File is missing
         if(ImageUpload == null)
@@ -114,9 +114,12 @@ public class TrailsController : Controller
     // POST: TRAILS/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+    // TO-DO: add functionality to change the image.
+    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,ImageUrl")] Trail trail)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,Category,ImageUrl")] Trail trail)
     {
         if (id != trail.Id)
         {
