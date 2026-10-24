@@ -1,11 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace AllTrailsAdmin.Models
 {
     public class Trail
     {
-        // db primary key
+        // primary key
         public int Id { get; set; }
+
+        // foreign key
+        [Display(Name = "Category")]
+        public int CategoryId { get; set; }
+
+        // navigation property
+        [ValidateNever]
+        public Category Category { get; set; } = null!;
 
         [StringLength(100)]
         [Required]
@@ -27,9 +36,6 @@ namespace AllTrailsAdmin.Models
 
         [Required]
         public string Location { get; set; } = string.Empty; // address, city, province... display Google map later
-
-        [Required]
-        public string Category {  get; set; } = string.Empty; // easy, difficult, dangerous, etc.
 
         // Url to image file stored in Azure Storage
         public string ImageUrl { get; set; } = string.Empty;

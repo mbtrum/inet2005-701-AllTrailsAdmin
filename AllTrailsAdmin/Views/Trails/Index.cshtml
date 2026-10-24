@@ -25,12 +25,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.ElevationGain)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
             @* <th>
                 @Html.DisplayNameFor(model => model.Location)
             </th> *@
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
+           
             <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
@@ -55,12 +56,13 @@
             <td>
                 @Html.DisplayFor(model => item.ElevationGain)
             </td>
+            <td>
+                @Html.DisplayFor(model => item.Category.Title) @* show the Title in the nav property *@
+            </td>
             @* <td>
                 @Html.DisplayFor(model => item.Location)
             </td> *@
-            <td>
-                @Html.DisplayFor(model => item.Category)
-            </td>
+            
             <td>
                 @Html.DisplayFor(model => item.CreatedDate)
             </td>            

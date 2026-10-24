@@ -43,10 +43,10 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="Category" class="form-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId"></select>
             </div>
+
 
             @* <div class="mb-3">
                 <label asp-for="CreatedDate" class="form-label"></label>

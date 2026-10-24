@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AllTrailsAdmin.Models;
 using AllTrailsAdmin.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 public class TrailsController : Controller
 {
@@ -19,7 +20,9 @@ public class TrailsController : Controller
     // GET: TRAILS/Index
     public async Task<IActionResult> Index()
     {
-        List<Trail> trails = await _context.Trail.ToListAsync();
+        List<Trail> trails = await _context.Trail
+            .Include(m => m.Category) //populate the nav property
+            .ToListAsync();
 
         return View(trails); // display trails in the view
     }
@@ -33,7 +36,9 @@ public class TrailsController : Controller
             return NotFound();            
         }
 
-        var trail = await _context.Trail.FirstOrDefaultAsync(m => m.Id == id); // get trail from db where Id = 5
+        var trail = await _context.Trail
+            .Include(m => m.Category) //populate the nav property
+            .FirstOrDefaultAsync(m => m.Id == id); // get trail from db where Id = 5
 
         // Was the row found in database?
         if (trail == null)
@@ -47,6 +52,10 @@ public class TrailsController : Controller
     // GET: TRAILS/Create
     public IActionResult Create()
     {
+        // create a select list for the categories
+        var categories = _context.Category.ToList();
+        ViewBag.CategoryId = new SelectList(categories, "Id", "Title");
+
         return View();
     }
 
@@ -55,7 +64,7 @@ public class TrailsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,Category")] Trail trail, IFormFile? ImageUpload)
+    public async Task<IActionResult> Create([Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,CategoryId")] Trail trail, IFormFile? ImageUpload)
     {
         // Validate if Image File is missing
         if(ImageUpload == null)
@@ -90,6 +99,10 @@ public class TrailsController : Controller
             return RedirectToAction(nameof(Index)); // re-direct to Trails/Index page
         }
 
+        // create a select list for the categories
+        var categories = _context.Category.ToList();
+        ViewBag.CategoryId = new SelectList(categories, "Id", "Title");
+
         return View(trail);
     }
 
@@ -108,6 +121,10 @@ public class TrailsController : Controller
             return NotFound();
         }
 
+        // create a select list for the categories
+        var categories = _context.Category.ToList();
+        ViewBag.CategoryId = new SelectList(categories, "Id", "Title");
+
         return View(trail);
     }
 
@@ -119,7 +136,7 @@ public class TrailsController : Controller
     
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,Category,ImageUrl")] Trail trail)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,ImageUrl,CategoryId")] Trail trail)
     {
         if (id != trail.Id)
         {
@@ -146,6 +163,11 @@ public class TrailsController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+
+        // create a select list for the categories
+        var categories = _context.Category.ToList();
+        ViewBag.CategoryId = new SelectList(categories, "Id", "Title");
+
         return View(trail);
     }
 
