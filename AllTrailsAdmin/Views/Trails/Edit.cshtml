@@ -45,8 +45,12 @@
                 <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId"></select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Image Upload:</label><br />
+                <label class="form-label">Existing Image</label><br />
                 <img src="@Model.ImageUrl" alt="@Model.Title" class="thumbnail" />
+            </div>
+            <div class="mb-3">
+                <label for="ImageUpload" class="form-label">Change Image</label>
+                <input type="file" id="ImageUpload" name="ImageUpload" class="form-control" />                
             </div>
             <div class="mb-3">
                 <label asp-for="CreatedDate" class="form-label"></label>

@@ -130,17 +130,20 @@ public class TrailsController : Controller
 
     // POST: TRAILS/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
-    // TO-DO: add functionality to change the image.
-    
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.    
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,ImageUrl,CategoryId")] Trail trail)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,ImageUrl,CategoryId")] Trail trail, IFormFile? ImageUpload)
     {
         if (id != trail.Id)
         {
             return NotFound();
+        }
+
+        // Handle new image file being uploaded
+        if(ImageUpload != null)
+        {
+            // TO-DO: save the new image and link to this trail record. Also nice to delete old file.
         }
 
         if (ModelState.IsValid)
