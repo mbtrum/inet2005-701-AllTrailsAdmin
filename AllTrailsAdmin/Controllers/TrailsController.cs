@@ -1,10 +1,13 @@
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using AllTrailsAdmin;
 using AllTrailsAdmin.Models;
 using AllTrailsAdmin.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
+[Authorize]
 public class TrailsController : Controller
 {
     private readonly AllTrailsAdminContext _context;
@@ -17,7 +20,7 @@ public class TrailsController : Controller
         _azureStorage = azureStorage;
     }
 
-    // GET: TRAILS/Index
+    // GET: TRAILS/Index    
     public async Task<IActionResult> Index()
     {
         List<Trail> trails = await _context.Trail
@@ -50,6 +53,7 @@ public class TrailsController : Controller
     }
 
     // GET: TRAILS/Create
+    [Authorize(Roles = "administrator")]
     public IActionResult Create()
     {
         // create a select list for the categories
@@ -64,6 +68,7 @@ public class TrailsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "administrator")]
     public async Task<IActionResult> Create([Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,CategoryId")] Trail trail, IFormFile? ImageUpload)
     {
         // Validate if Image File is missing
@@ -107,6 +112,7 @@ public class TrailsController : Controller
     }
 
     // GET: TRAILS/Edit/5
+    [Authorize(Roles = "administrator")]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -133,6 +139,7 @@ public class TrailsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.    
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "administrator")]
     public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,Description,Length,ElevationGain,Location,CreatedDate,ImageUrl,CategoryId")] Trail trail, IFormFile? ImageUpload)
     {
         if (id != trail.Id)
@@ -175,6 +182,7 @@ public class TrailsController : Controller
     }
 
     // GET: TRAILS/Delete/5
+    [Authorize(Roles = "administrator")]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -195,6 +203,7 @@ public class TrailsController : Controller
     // POST: TRAILS/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Roles = "administrator")]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
         var trail = await _context.Trail.FindAsync(id);

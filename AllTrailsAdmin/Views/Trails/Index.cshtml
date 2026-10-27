@@ -67,9 +67,20 @@
                 @Html.DisplayFor(model => item.CreatedDate)
             </td>            
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if (User.IsInRole("administrator"))
+                {
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    </div>                    
+                }
             </td>
         </tr>
 }
