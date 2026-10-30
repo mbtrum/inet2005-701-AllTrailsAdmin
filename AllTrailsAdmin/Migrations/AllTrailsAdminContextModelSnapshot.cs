@@ -16,7 +16,7 @@ namespace AllTrailsAdmin.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.13")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -36,6 +36,41 @@ namespace AllTrailsAdmin.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("AllTrailsAdmin.Models.HikerReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrailId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrailId");
+
+                    b.ToTable("HikerReview");
                 });
 
             modelBuilder.Entity("AllTrailsAdmin.Models.Trail", b =>
@@ -83,6 +118,17 @@ namespace AllTrailsAdmin.Migrations
                     b.ToTable("Trail");
                 });
 
+            modelBuilder.Entity("AllTrailsAdmin.Models.HikerReview", b =>
+                {
+                    b.HasOne("AllTrailsAdmin.Models.Trail", "Trail")
+                        .WithMany("HikerReviews")
+                        .HasForeignKey("TrailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trail");
+                });
+
             modelBuilder.Entity("AllTrailsAdmin.Models.Trail", b =>
                 {
                     b.HasOne("AllTrailsAdmin.Models.Category", "Category")
@@ -97,6 +143,11 @@ namespace AllTrailsAdmin.Migrations
             modelBuilder.Entity("AllTrailsAdmin.Models.Category", b =>
                 {
                     b.Navigation("Trails");
+                });
+
+            modelBuilder.Entity("AllTrailsAdmin.Models.Trail", b =>
+                {
+                    b.Navigation("HikerReviews");
                 });
 #pragma warning restore 612, 618
         }

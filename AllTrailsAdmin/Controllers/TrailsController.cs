@@ -23,6 +23,9 @@ public class TrailsController : Controller
     // GET: TRAILS/Index    
     public async Task<IActionResult> Index()
     {
+        string userId = User.GetUserId();
+        Console.WriteLine("Logged in user id: " + userId);
+
         List<Trail> trails = await _context.Trail
             .Include(m => m.Category) //populate the nav property
             .ToListAsync();

@@ -16,6 +16,13 @@ namespace AllTrailsAdmin.Models
         [ValidateNever]
         public Category Category { get; set; } = null!;
 
+        // navigation property
+        [ValidateNever]
+        public List<HikerReview> HikerReviews { get; set; } = new List<HikerReview>();
+
+
+
+
         [StringLength(100)]
         [Required]
         public string Title { get; set; } = string.Empty;

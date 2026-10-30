@@ -64,7 +64,14 @@
     </dd>
 </dl>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+
+@if (User.IsInRole("administrator")) 
+{
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+} else
+{
     <a asp-action="Index">Back to List</a>
-</div>
+}
