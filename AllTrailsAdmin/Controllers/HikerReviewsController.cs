@@ -14,6 +14,7 @@ public class HikerReviewsController : Controller
     // The logged in user
     private string? _userId;
 
+    // Constructor
     public HikerReviewsController(AllTrailsAdminContext context)
     {        
         _context = context;
@@ -49,6 +50,7 @@ public class HikerReviewsController : Controller
         }
 
         var hikerReview = await _context.HikerReview
+            .Where(m => m.CreatedBy == _userId)
             .Include(h => h.Trail)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (hikerReview == null)
@@ -59,9 +61,10 @@ public class HikerReviewsController : Controller
         return View(hikerReview);
     }
 
-    public IActionResult Create()
+    public IActionResult Create(int? trailId)
     {
-        ViewData["TrailId"] = new SelectList(_context.Trail, "Id", "Title");
+        ViewData["TrailId"] = new SelectList(_context.Trail, "Id", "Title", trailId);
+
         return View();
     }
 
@@ -80,6 +83,7 @@ public class HikerReviewsController : Controller
         }
 
         ViewData["TrailId"] = new SelectList(_context.Trail, "Id", "Title", hikerReview.TrailId);
+
         return View(hikerReview);
     }
 
@@ -90,13 +94,17 @@ public class HikerReviewsController : Controller
             return NotFound();
         }
 
-        var hikerReview = await _context.HikerReview.FindAsync(id);
+        var hikerReview = await _context.HikerReview
+            .Where(m => m.CreatedBy == _userId && m.IsPublished == false) // Only edit when not published yet
+            .FirstOrDefaultAsync(m => m.Id == id);
+
         if (hikerReview == null)
         {
             return NotFound();
         }
 
         ViewData["TrailId"] = new SelectList(_context.Trail, "Id", "Title", hikerReview.TrailId);
+        
         return View(hikerReview);
     }
 
@@ -130,6 +138,7 @@ public class HikerReviewsController : Controller
         }
 
         ViewData["TrailId"] = new SelectList(_context.Trail, "Id", "Title", hikerReview.TrailId);
+
         return View(hikerReview);
     }
 
@@ -141,8 +150,10 @@ public class HikerReviewsController : Controller
         }
 
         var hikerReview = await _context.HikerReview
+            .Where(m => m.CreatedBy == _userId)
             .Include(h => h.Trail)
             .FirstOrDefaultAsync(m => m.Id == id);
+
         if (hikerReview == null)
         {
             return NotFound();
@@ -156,12 +167,14 @@ public class HikerReviewsController : Controller
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
         var hikerReview = await _context.HikerReview.FindAsync(id);
+        
         if (hikerReview != null)
         {
             _context.HikerReview.Remove(hikerReview);
         }
 
         await _context.SaveChangesAsync();
+        
         return RedirectToAction(nameof(Index));
     }
 

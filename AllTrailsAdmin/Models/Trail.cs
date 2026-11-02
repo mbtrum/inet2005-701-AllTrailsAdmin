@@ -14,10 +14,12 @@ namespace AllTrailsAdmin.Models
 
         // navigation property
         [ValidateNever]
+        [ScaffoldColumn(false)]
         public Category Category { get; set; } = null!;
 
         // navigation property
         [ValidateNever]
+        [ScaffoldColumn(false)]
         public List<HikerReview> HikerReviews { get; set; } = new List<HikerReview>();
 
 
