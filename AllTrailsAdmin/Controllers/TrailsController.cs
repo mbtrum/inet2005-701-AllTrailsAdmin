@@ -150,14 +150,14 @@ public class TrailsController : Controller
             return NotFound();
         }
 
-        // Handle new image file being uploaded
-        if(ImageUpload != null)
-        {
-            // TO-DO: save the new image and link to this trail record. Also nice to delete old file.
-        }
-
         if (ModelState.IsValid)
         {
+            // Handle new image file being uploaded
+            if (ImageUpload != null)
+            {
+                // TO-DO: save the new image and link to this trail record. Also nice to delete old file.
+            }
+
             try
             {
                 _context.Update(trail);
